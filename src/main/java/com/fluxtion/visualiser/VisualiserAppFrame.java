@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 import java.util.stream.Collectors;
 import javax.swing.AbstractAction;
@@ -60,6 +61,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         menuOpen = new javax.swing.JMenuItem();
         recentMenu = new javax.swing.JMenu();
+        clearRecentMenu = new javax.swing.JMenuItem();
         menuExport = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         menuExit = new javax.swing.JMenuItem();
@@ -84,6 +86,14 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         recentMenu.setText("open recent");
         jMenu1.add(recentMenu);
 
+        clearRecentMenu.setText("clear recent");
+        clearRecentMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearRecentMenuActionPerformed(evt);
+            }
+        });
+        jMenu1.add(clearRecentMenu);
+
         menuExport.setText("export");
         menuExport.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,7 +115,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
 
         jMenu2.setText("Graph");
 
-        collapseFoldMenu.setText("show filtered");
+        collapseFoldMenu.setText("show only filtered");
         collapseFoldMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 collapseFoldMenuActionPerformed(evt);
@@ -121,7 +131,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         });
         jMenu2.add(expandFoldMenu);
 
-        menuReload.setText("reset");
+        menuReload.setText("reload from file");
         menuReload.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuReloadActionPerformed(evt);
@@ -196,6 +206,15 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         panel.foldCells(true);
     }//GEN-LAST:event_collapseFoldMenuActionPerformed
 
+    private void clearRecentMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearRecentMenuActionPerformed
+        try {
+            prefs.clear();
+            recentMenu.removeAll();
+        } catch (BackingStoreException ex) {
+            Logger.getLogger(VisualiserAppFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_clearRecentMenuActionPerformed
+
     private void loadSelectedGraphMlFile() {
         getContentPane().removeAll();
         panel = new GraphVisualiserPanel();
@@ -262,6 +281,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuItem clearRecentMenu;
     private javax.swing.JMenuItem collapseFoldMenu;
     private javax.swing.JMenuItem expandFoldMenu;
     private javax.swing.JMenu jMenu1;

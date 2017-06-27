@@ -22,6 +22,14 @@
                 <Property name="text" type="java.lang.String" value="open recent"/>
               </Properties>
             </Menu>
+            <MenuItem class="javax.swing.JMenuItem" name="clearRecentMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="clear recent"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearRecentMenuActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuExport">
               <Properties>
                 <Property name="text" type="java.lang.String" value="export"/>
@@ -49,7 +57,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="collapseFoldMenu">
               <Properties>
-                <Property name="text" type="java.lang.String" value="show filtered"/>
+                <Property name="text" type="java.lang.String" value="show only filtered"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="collapseFoldMenuActionPerformed"/>
@@ -65,7 +73,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="menuReload">
               <Properties>
-                <Property name="text" type="java.lang.String" value="reset"/>
+                <Property name="text" type="java.lang.String" value="reload from file"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="menuReloadActionPerformed"/>

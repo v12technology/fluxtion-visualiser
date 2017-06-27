@@ -62,6 +62,44 @@ along with this program.  If not, see <http://www.gnu.org/licenses />.
         </snapshotRepository>
     </distributionManagement>
     
+    <profiles>
+        <profile>
+            <id>main-fatjar</id>
+<!--            <dependencies>
+                <dependency>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </dependency>
+            </dependencies>-->
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>shade</goal>
+                                </goals>
+                                <configuration>
+                                    <outputFile>code-graph.jar</outputFile>
+                                    <transformers>
+                                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                            <mainClass>com.fluxtion.visualiser.App</mainClass>
+                                        </transformer>
+                                    </transformers>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>    
+    
+    
     <dependencies>
         <dependency>
             <groupId>com.mxgraph</groupId>

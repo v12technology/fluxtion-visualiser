@@ -57,6 +57,11 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jToolBar1 = new javax.swing.JToolBar();
+        btnZoomIn = new javax.swing.JButton();
+        btnZoomOut = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuOpen = new javax.swing.JMenuItem();
@@ -72,6 +77,45 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fluxtion visualiser");
+
+        jToolBar1.setFloatable(false);
+        jToolBar1.setRollover(true);
+
+        btnZoomIn.setText("zoom in");
+        btnZoomIn.setFocusable(false);
+        btnZoomIn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnZoomIn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnZoomIn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnZoomInActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnZoomIn);
+
+        btnZoomOut.setText("zoom out");
+        btnZoomOut.setFocusable(false);
+        btnZoomOut.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnZoomOut.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnZoomOut.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnZoomOutActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnZoomOut);
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+        jLabel1.setText("    search filter:");
+        jToolBar1.add(jLabel1);
+
+        jTextField1.setColumns(20);
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(jTextField1);
+
+        getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
 
         jMenu1.setText("File");
 
@@ -143,7 +187,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        setSize(new java.awt.Dimension(418, 347));
+        setSize(new java.awt.Dimension(640, 347));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -215,11 +259,25 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_clearRecentMenuActionPerformed
 
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void btnZoomInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZoomInActionPerformed
+        panel.zoom(true);
+    }//GEN-LAST:event_btnZoomInActionPerformed
+
+    private void btnZoomOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZoomOutActionPerformed
+        panel.zoom(false);
+    }//GEN-LAST:event_btnZoomOutActionPerformed
+
     private void loadSelectedGraphMlFile() {
         getContentPane().removeAll();
+        getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
         panel = new GraphVisualiserPanel();
         panel.load(selectedFile);
-        getContentPane().add(panel);
+        getContentPane().add(panel, java.awt.BorderLayout.CENTER);
+        panel.requestFocus();
         revalidate();
         String filesRecent = prefs.get(RECENTFILE_KEY, null);
         try {
@@ -281,13 +339,18 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnZoomIn;
+    private javax.swing.JButton btnZoomOut;
     private javax.swing.JMenuItem clearRecentMenu;
     private javax.swing.JMenuItem collapseFoldMenu;
     private javax.swing.JMenuItem expandFoldMenu;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenuItem menuExit;
     private javax.swing.JMenuItem menuExport;
     private javax.swing.JMenuItem menuOpen;

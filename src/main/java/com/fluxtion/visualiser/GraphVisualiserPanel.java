@@ -18,6 +18,8 @@ import com.mxgraph.view.mxGraph;
 import com.mxgraph.view.mxStylesheet;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -32,7 +34,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -57,8 +63,38 @@ public class GraphVisualiserPanel extends JPanel {
         setOpaque(true);
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
-    }
 
+        InputMap im = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, 0), "onZoomIn");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, 0), "onZoomOut");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "resetZoom");
+
+        am.put("onZoomIn", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                graphComponent.zoomIn();
+            }
+        });
+        
+        am.put("onZoomOut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                graphComponent.zoomOut();
+            }
+        });
+        
+        am.put("resetZoom", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                graphComponent.zoomActual();
+                graphComponent.zoomAndCenter();
+            }
+        });
+
+    }
+    
     private List<mxICell> addParents(mxICell cell, boolean recurse, List<mxICell> cells) {
         for (Object o : graph.getIncomingEdges(cell)) {
             mxCell edge = (mxCell) o;
@@ -129,6 +165,18 @@ public class GraphVisualiserPanel extends JPanel {
         //red text for selected
         graph.setCellStyles(mxConstants.STYLE_OPACITY, "100", selectedCells.toArray());
         graph.setCellStyles(mxConstants.STYLE_FONTCOLOR, "red", selectedCells.toArray());
+    }
+    
+    public void zoom(boolean zoomIn){
+        if(zoomIn){
+            graphComponent.zoomIn();
+        }else{
+            graphComponent.zoomOut();
+        }
+    }
+    
+    public void fillterByName(String filter){
+        System.out.println("new filter:" + filter);
     }
 
     public mxGraph loadMxGraph(File f) {
@@ -229,7 +277,9 @@ public class GraphVisualiserPanel extends JPanel {
         graphComponent = new mxGraphComponent(graph);
         graphComponent.getViewport().setOpaque(true);
         graphComponent.getViewport().setBackground(Color.WHITE);
+        graphComponent.getVerticalScrollBar().setUnitIncrement(20);
         graphComponent.updateComponents();
+        graphComponent.zoomAndCenter();
         //click handler
 
         graphComponent.getGraphControl().addMouseListener(new MouseAdapter() {
@@ -280,7 +330,8 @@ public class GraphVisualiserPanel extends JPanel {
         });
         add(graphComponent, BorderLayout.CENTER);
         graphComponent.setCenterPage(true);
-        graphComponent.zoomAndCenter();
+        graphComponent.zoomTo(1.5, true);
+//        graphComponent.zoomAndCenter();
     }
 
     public void foldCells(boolean fold) {

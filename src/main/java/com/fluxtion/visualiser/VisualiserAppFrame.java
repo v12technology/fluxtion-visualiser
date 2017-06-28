@@ -303,9 +303,6 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * @param args the command line arguments
-     */
     public void display() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override

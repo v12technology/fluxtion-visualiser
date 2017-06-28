@@ -64,7 +64,8 @@ public class GraphVisualiserPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        InputMap im = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+//        InputMap im = getInputMap(WHEN_IN_FOCUSED_WINDOW);
+        InputMap im = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         ActionMap am = getActionMap();
 
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, 0), "onZoomIn");
@@ -330,8 +331,6 @@ public class GraphVisualiserPanel extends JPanel {
         });
         add(graphComponent, BorderLayout.CENTER);
         graphComponent.setCenterPage(true);
-        graphComponent.zoomTo(1.5, true);
-//        graphComponent.zoomAndCenter();
     }
 
     public void foldCells(boolean fold) {

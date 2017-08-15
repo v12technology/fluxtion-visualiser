@@ -141,7 +141,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses />.
                                     <goal>shade</goal>
                                 </goals>
                                 <configuration>
-                                    <outputFile>dist/code-graph.jar</outputFile>
+                                    <outputFile>dist/fluxtion-visualiser.jar</outputFile>
                                     <transformers>
                                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                             <mainClass>com.fluxtion.visualiser.App</mainClass>
@@ -155,14 +155,5 @@ along with this program.  If not, see <http://www.gnu.org/licenses />.
             </build>
         </profile>
     </profiles>    
-    
-    
-    <dependencies>
-        <dependency>
-            <groupId>com.mxgraph</groupId>
-            <artifactId>jgraphx</artifactId>
-            <version>3.1.2.1</version>
-        </dependency>
-    </dependencies>
     
 </project>

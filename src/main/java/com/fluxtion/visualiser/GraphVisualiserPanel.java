@@ -82,6 +82,7 @@ public class GraphVisualiserPanel extends JPanel {
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_I, 0), "onZoomIn");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_O, 0), "onZoomOut");
         im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "resetZoom");
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_F, 0), "filteredView");
 
         am.put("onZoomIn", new AbstractAction() {
             @Override
@@ -89,14 +90,14 @@ public class GraphVisualiserPanel extends JPanel {
                 graphComponent.zoomIn();
             }
         });
-        
+
         am.put("onZoomOut", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 graphComponent.zoomOut();
             }
         });
-        
+
         am.put("resetZoom", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -105,8 +106,15 @@ public class GraphVisualiserPanel extends JPanel {
             }
         });
 
+        am.put("filteredView", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                foldCells(true);
+            }
+        });
+
     }
-    
+
     private List<mxICell> addParents(mxICell cell, boolean recurse, List<mxICell> cells) {
         for (Object o : graph.getIncomingEdges(cell)) {
             mxCell edge = (mxCell) o;
@@ -152,6 +160,14 @@ public class GraphVisualiserPanel extends JPanel {
         configureDisplay();
     }
 
+    public void selectCellsBySearchString(String id) {
+        Object[] allCells = mxGraphModel.getChildren(graph.getModel(), graph.getDefaultParent());
+        List<mxICell> matchingCells = Arrays.stream(allCells).map((t) -> (mxICell) t).filter((t) -> {
+            return t.getId().contains(id);
+        }).collect(Collectors.toList());
+        highlightCells(matchingCells);
+    }
+
     public List<String> selectedIds() {
         List<String> ids = selectedCells.stream().map((m) -> m.getId()).collect(Collectors.toList());
         return ids;
@@ -162,7 +178,12 @@ public class GraphVisualiserPanel extends JPanel {
         List<mxICell> matchingCells = Arrays.stream(allCells).map((t) -> (mxICell) t).filter((t) -> {
             return idList.contains(t.getId());
         }).collect(Collectors.toList());
+        highlightCells(matchingCells);
+    }
+
+    private void highlightCells(List<mxICell> matchingCells) {
         //grey everything
+        Object[] allCells = mxGraphModel.getChildren(graph.getModel(), graph.getDefaultParent());
         graph.setCellStyles(mxConstants.STYLE_OPACITY, "10", allCells);
         graph.setCellStyles(mxConstants.STYLE_FONTCOLOR, "grey", allCells);
         //
@@ -178,16 +199,16 @@ public class GraphVisualiserPanel extends JPanel {
         graph.setCellStyles(mxConstants.STYLE_OPACITY, "100", selectedCells.toArray());
         graph.setCellStyles(mxConstants.STYLE_FONTCOLOR, "red", selectedCells.toArray());
     }
-    
-    public void zoom(boolean zoomIn){
-        if(zoomIn){
+
+    public void zoom(boolean zoomIn) {
+        if (zoomIn) {
             graphComponent.zoomIn();
-        }else{
+        } else {
             graphComponent.zoomOut();
         }
     }
-    
-    public void fillterByName(String filter){
+
+    public void fillterByName(String filter) {
         System.out.println("new filter:" + filter);
     }
 
@@ -272,11 +293,14 @@ public class GraphVisualiserPanel extends JPanel {
         setOpaque(true);
         setLayout(new BorderLayout());
         graph.setCellsEditable(false);
-        graph.setCellsMovable(false);
-        graph.setCellsResizable(false);
         graph.setCellsDisconnectable(false);
-        graph.setCellsLocked(true);
+        graph.setCellsLocked(false);
         graph.setConnectableEdges(false);
+        graph.setAutoSizeCells(true);
+
+        graph.setCellsMovable(true);
+        graph.setCellsResizable(true);
+        graph.setLabelsClipped(true);
         Object parent = graph.getDefaultParent();
 
         layoutImpl = new mxHierarchicalLayout(graph);

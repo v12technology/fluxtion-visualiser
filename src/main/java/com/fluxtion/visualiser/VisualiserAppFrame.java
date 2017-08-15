@@ -73,6 +73,8 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         btnZoomOut = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        btnOnlyFiltered = new javax.swing.JButton();
+        btnShowAll = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuOpen = new javax.swing.JMenuItem();
@@ -125,6 +127,28 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
             }
         });
         jToolBar1.add(jTextField1);
+
+        btnOnlyFiltered.setText("filtered");
+        btnOnlyFiltered.setFocusable(false);
+        btnOnlyFiltered.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnOnlyFiltered.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnOnlyFiltered.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOnlyFilteredActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnOnlyFiltered);
+
+        btnShowAll.setText("show all");
+        btnShowAll.setFocusable(false);
+        btnShowAll.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnShowAll.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        btnShowAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnShowAllActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(btnShowAll);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
 
@@ -272,6 +296,13 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
         // TODO add your handling code here:
+        String id = jTextField1.getText();
+        loadSelectedGraphMlFile();
+        if (id == null || id.isEmpty()) {
+            return;
+        }
+        panel.selectCellsBySearchString(id);
+        panel.foldCells(true);
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void btnZoomInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZoomInActionPerformed
@@ -281,6 +312,16 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
     private void btnZoomOutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnZoomOutActionPerformed
         panel.zoom(false);
     }//GEN-LAST:event_btnZoomOutActionPerformed
+
+    private void btnOnlyFilteredActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOnlyFilteredActionPerformed
+        panel.foldCells(true);
+    }//GEN-LAST:event_btnOnlyFilteredActionPerformed
+
+    private void btnShowAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnShowAllActionPerformed
+        List<String> selectedIds = panel.selectedIds();
+        loadSelectedGraphMlFile();
+        panel.selectCellsById(selectedIds);
+    }//GEN-LAST:event_btnShowAllActionPerformed
 
     private void loadSelectedGraphMlFile() {
         getContentPane().removeAll();
@@ -347,6 +388,8 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnOnlyFiltered;
+    private javax.swing.JButton btnShowAll;
     private javax.swing.JButton btnZoomIn;
     private javax.swing.JButton btnZoomOut;
     private javax.swing.JMenuItem clearRecentMenu;

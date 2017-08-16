@@ -39,7 +39,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  */
 public class VisualiserAppFrame extends javax.swing.JFrame {
     
-    private Preferences prefs;
+    private final Preferences prefs;
     private File selectedFile;
     private static final String RECENTFILE_KEY = "recentFiles";
     private GraphVisualiserPanel panel;
@@ -49,16 +49,6 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
      */
     public VisualiserAppFrame() {
         initComponents();
-//        JPanel content = (JPanel) getContentPane();
-//        InputMap inputMap = content.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-//        inputMap.put(KeyStroke.getKeyStroke("r"), "reloadGraph");
-//        content.getActionMap().put("reloadGraph", new AbstractAction() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.out.println("loading");
-//                loadSelectedGraphMlFile();
-//            }
-//        });
         prefs = Preferences.userRoot().node(this.getClass().getName());
         String filesRecent = prefs.get(RECENTFILE_KEY, null);
         if (filesRecent != null) {
@@ -168,7 +158,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
 
         jPanel1.add(jToolBar1, java.awt.BorderLayout.NORTH);
 
-        jSplitPane1.setDividerLocation(300);
+        jSplitPane1.setDividerLocation(750);
         jSplitPane1.setResizeWeight(0.9);
 
         jTabbedPane1.setMaximumSize(new java.awt.Dimension(250, 32767));
@@ -251,7 +241,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        setSize(new java.awt.Dimension(747, 615));
+        setSize(new java.awt.Dimension(1000, 511));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 

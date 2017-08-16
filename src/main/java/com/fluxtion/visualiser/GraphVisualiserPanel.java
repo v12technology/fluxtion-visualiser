@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JPanel;
@@ -62,6 +63,7 @@ import org.xml.sax.SAXException;
  *
  * @author Greg Higgins (greg.higgins@V12technology.com)
  */
+//public class GraphVisualiserPanel extends JScrollPane {
 public class GraphVisualiserPanel extends JPanel {
 
     private mxGraph graph;
@@ -112,7 +114,13 @@ public class GraphVisualiserPanel extends JPanel {
                 foldCells(true);
             }
         });
+    }
 
+    public void addReloadAction(Action a) {
+        InputMap im = getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        ActionMap am = getActionMap();
+        im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "reload");
+        am.put("reload", a);
     }
 
     private List<mxICell> addParents(mxICell cell, boolean recurse, List<mxICell> cells) {
@@ -280,7 +288,6 @@ public class GraphVisualiserPanel extends JPanel {
             document = parser.parse(f);
             Object parent = graph.getDefaultParent();
             mxGraphMlCodec.decode(document, graph);
-            System.out.println("decoded graph:" + graph);
         } catch (SAXException | IOException | ParserConfigurationException ex) {
             Logger.getLogger(GraphVisualiserPanel.class.getName()).log(Level.SEVERE, null, ex);
         }

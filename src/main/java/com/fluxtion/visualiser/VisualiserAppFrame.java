@@ -38,7 +38,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Greg Higgins (greg.higgins@V12technology.com)
  */
 public class VisualiserAppFrame extends javax.swing.JFrame {
-
+    
     private Preferences prefs;
     private File selectedFile;
     private static final String RECENTFILE_KEY = "recentFiles";
@@ -49,7 +49,16 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
      */
     public VisualiserAppFrame() {
         initComponents();
-        System.out.println("completed initComponents()");
+//        JPanel content = (JPanel) getContentPane();
+//        InputMap inputMap = content.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+//        inputMap.put(KeyStroke.getKeyStroke("r"), "reloadGraph");
+//        content.getActionMap().put("reloadGraph", new AbstractAction() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                System.out.println("loading");
+//                loadSelectedGraphMlFile();
+//            }
+//        });
         prefs = Preferences.userRoot().node(this.getClass().getName());
         String filesRecent = prefs.get(RECENTFILE_KEY, null);
         if (filesRecent != null) {
@@ -68,6 +77,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
         btnZoomIn = new javax.swing.JButton();
         btnZoomOut = new javax.swing.JButton();
@@ -75,6 +85,10 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         jTextField1 = new javax.swing.JTextField();
         btnOnlyFiltered = new javax.swing.JButton();
         btnShowAll = new javax.swing.JButton();
+        jSplitPane1 = new javax.swing.JSplitPane();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        eventPanel1 = new com.fluxtion.visualiser.extensions.audit.EventPanel();
+        jPanel2 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         menuOpen = new javax.swing.JMenuItem();
@@ -90,6 +104,8 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Fluxtion visualiser");
+
+        jPanel1.setLayout(new java.awt.BorderLayout());
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
@@ -150,7 +166,20 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         });
         jToolBar1.add(btnShowAll);
 
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
+        jPanel1.add(jToolBar1, java.awt.BorderLayout.NORTH);
+
+        jSplitPane1.setDividerLocation(300);
+        jSplitPane1.setResizeWeight(0.9);
+
+        jTabbedPane1.setMaximumSize(new java.awt.Dimension(250, 32767));
+        jTabbedPane1.addTab("Event log", eventPanel1);
+
+        jSplitPane1.setRightComponent(jTabbedPane1);
+        jSplitPane1.setLeftComponent(jPanel2);
+
+        jPanel1.add(jSplitPane1, java.awt.BorderLayout.CENTER);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
         jMenu1.setText("File");
 
@@ -222,7 +251,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
 
         setJMenuBar(jMenuBar1);
 
-        setSize(new java.awt.Dimension(640, 347));
+        setSize(new java.awt.Dimension(747, 615));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -322,13 +351,20 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         loadSelectedGraphMlFile();
         panel.selectCellsById(selectedIds);
     }//GEN-LAST:event_btnShowAllActionPerformed
-
+    
     private void loadSelectedGraphMlFile() {
-        getContentPane().removeAll();
-        getContentPane().add(jToolBar1, java.awt.BorderLayout.NORTH);
         panel = new GraphVisualiserPanel();
         panel.load(selectedFile);
-        getContentPane().add(panel, java.awt.BorderLayout.CENTER);
+
+        //add keyboard listener
+        panel.addReloadAction(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadSelectedGraphMlFile();
+            }
+        });
+
+        jSplitPane1.setLeftComponent(panel);
         panel.requestFocus();
         revalidate();
         String filesRecent = prefs.get(RECENTFILE_KEY, null);
@@ -340,7 +376,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
                 boolean noMatch = !Arrays.stream(filesRecent.split("\\|")).map((s) -> s.trim()).anyMatch((t) -> {
                     return t.equalsIgnoreCase(canonicalPath);
                 });
-
+                
                 if (noMatch) {
                     recentMenu.add(new RecentMenuItem(canonicalPath));
                     filesRecent += "|" + selectedFile.getCanonicalPath();
@@ -354,7 +390,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
             Logger.getLogger(VisualiserAppFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void display() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
@@ -364,11 +400,11 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
             }
         });
     }
-
+    
     private class RecentMenuItem extends JMenuItem {
-
+        
         private File file;
-
+        
         public RecentMenuItem(String text) {
             super();
             file = new File(text);
@@ -384,7 +420,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
                 }
             });
         }
-
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -394,12 +430,17 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnZoomOut;
     private javax.swing.JMenuItem clearRecentMenu;
     private javax.swing.JMenuItem collapseFoldMenu;
+    private com.fluxtion.visualiser.extensions.audit.EventPanel eventPanel1;
     private javax.swing.JMenuItem expandFoldMenu;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JSplitPane jSplitPane1;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JMenuItem menuExit;

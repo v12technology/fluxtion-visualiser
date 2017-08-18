@@ -173,12 +173,22 @@ public class GraphVisualiserPanel extends JPanel {
         List<mxICell> matchingCells = Arrays.stream(allCells).map((t) -> (mxICell) t).filter((t) -> {
             return t.getId().contains(id);
         }).collect(Collectors.toList());
-        highlightCells(matchingCells);
+        highlightCells(matchingCells, true);
     }
 
     public List<String> selectedIds() {
         List<String> ids = selectedCells.stream().map((m) -> m.getId()).collect(Collectors.toList());
         return ids;
+    }
+    
+    public void highlightCellOnly(String cellId){
+        Object[] allCells = mxGraphModel.getChildren(graph.getModel(), graph.getDefaultParent());
+        List<mxICell> matchingCells = Arrays.stream(allCells).map((t) -> (mxICell) t).filter((t) -> {
+            return cellId.equals(t.getId());
+        }).collect(Collectors.toList());
+        selectedCells.clear();
+        highlightCells(matchingCells, false);
+        graphComponent.scrollCellToVisible(matchingCells.get(0), false);
     }
 
     public void selectCellsById(List<String> idList) {
@@ -186,18 +196,20 @@ public class GraphVisualiserPanel extends JPanel {
         List<mxICell> matchingCells = Arrays.stream(allCells).map((t) -> (mxICell) t).filter((t) -> {
             return idList.contains(t.getId());
         }).collect(Collectors.toList());
-        highlightCells(matchingCells);
+        highlightCells(matchingCells, true);
     }
 
-    private void highlightCells(List<mxICell> matchingCells) {
+    private void highlightCells(List<mxICell> matchingCells, boolean highlightRelations) {
         //grey everything
         Object[] allCells = mxGraphModel.getChildren(graph.getModel(), graph.getDefaultParent());
         graph.setCellStyles(mxConstants.STYLE_OPACITY, "10", allCells);
         graph.setCellStyles(mxConstants.STYLE_FONTCOLOR, "grey", allCells);
         //
         for (mxICell selectedCell : matchingCells) {
-            addParents(selectedCell, true, highlightedCells);
-            addChildren(selectedCell, true, highlightedCells);
+            if(highlightRelations){
+                addParents(selectedCell, true, highlightedCells);
+                addChildren(selectedCell, true, highlightedCells);
+            }
             selectedCells.add(selectedCell);
         }
         //highlight path nodes

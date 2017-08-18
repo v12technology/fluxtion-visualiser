@@ -16,6 +16,9 @@
  */
 package com.fluxtion.visualiser;
 
+import com.fluxtion.visualiser.extensions.audit.EventLog;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +46,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
     private File selectedFile;
     private static final String RECENTFILE_KEY = "recentFiles";
     private GraphVisualiserPanel panel;
+    private EventBus eventBus;
 
     /**
      * Creates new form SepVisualiaserFrame
@@ -56,6 +60,15 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
                 recentMenu.add(new RecentMenuItem(s));
             });
         }
+        eventBus = new EventBus();
+        eventBus.register(this);
+        eventPanel1.setEventBus(eventBus);
+    }
+    
+    @Subscribe
+    public void selectedAuditRecord(EventLog.AuditRecord record){
+        System.out.println("received:" + record);
+        panel.highlightCellOnly(record.getNodeId());
     }
 
     /**

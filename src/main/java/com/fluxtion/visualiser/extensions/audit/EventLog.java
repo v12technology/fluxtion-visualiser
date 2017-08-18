@@ -61,7 +61,7 @@ public class EventLog {
         return (List< Map>) map.get("nodeLogs");
     }
 
-    public List< AuditRecord> auditLogs() {
+    public List< AuditRecord> getAuditLogs() {
         if (auditList == null) {
             LongAdder accumulator = new LongAdder();
             auditList = ((List< Map>) map.get("nodeLogs")).stream().map(m -> {
@@ -97,7 +97,7 @@ public class EventLog {
                 + ", groupingId=" + getGroupingId()
                 + ", event=" + getEventType()
                 + ", logCount=" + logCount()
-                + ", auditLogs=" + auditLogs()
+                + ", auditLogs=" + getAuditLogs()
                 + ", nodeLogs=" + nodeLogs()
                 + ", nodeNames=" + nodeNames()
                 + '}';
@@ -109,21 +109,27 @@ public class EventLog {
         private final Map propertyMap;
         private final int sequenceNumber;
 
+        public AuditRecord(String nodeId, Map propertyMap, int sequenceNumber) {
+            this.nodeId = nodeId;
+            this.propertyMap = propertyMap;
+            this.sequenceNumber = sequenceNumber;
+        }
+
         public AuditRecord(Map.Entry entry, int sequenceNumber) {
             this.nodeId = (String) entry.getKey();
             this.propertyMap = (Map) entry.getValue();
             this.sequenceNumber = sequenceNumber;
         }
 
-        public String nodeId() {
+        public String getNodeId() {
             return nodeId;
         }
 
-        public Map propertyMap() {
+        public Map getPropertyMap() {
             return propertyMap;
         }
 
-        public int sequenceNumber() {
+        public int getSequenceNumber() {
             return sequenceNumber;
         }
 

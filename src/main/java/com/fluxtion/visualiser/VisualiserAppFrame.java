@@ -41,18 +41,29 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Greg Higgins (greg.higgins@V12technology.com)
  */
 public class VisualiserAppFrame extends javax.swing.JFrame {
-    
+
     private final Preferences prefs;
     private File selectedFile;
     private static final String RECENTFILE_KEY = "recentFiles";
     private GraphVisualiserPanel panel;
     private EventBus eventBus;
+    private final FileDrop fileDrop;
 
     /**
      * Creates new form SepVisualiaserFrame
      */
     public VisualiserAppFrame() {
         initComponents();
+
+        fileDrop = new FileDrop(jPanel1, true, (java.io.File[] files) -> {
+            System.out.println("drop:" + Arrays.toString(files));
+            if (files.length > 0) {
+                selectedFile = files[0];
+                loadSelectedGraphMlFile();
+            }
+
+        });
+
         prefs = Preferences.userRoot().node(this.getClass().getName());
         String filesRecent = prefs.get(RECENTFILE_KEY, null);
         if (filesRecent != null) {
@@ -64,9 +75,9 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         eventBus.register(this);
         eventPanel1.setEventBus(eventBus);
     }
-    
+
     @Subscribe
-    public void selectedAuditRecord(EventLog.AuditRecord record){
+    public void selectedAuditRecord(EventLog.AuditRecord record) {
         System.out.println("received:" + record);
         panel.highlightCellOnly(record.getNodeId());
     }
@@ -273,8 +284,8 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         if (result == JFileChooser.APPROVE_OPTION) {
             selectedFile = fileChooser.getSelectedFile();
             loadSelectedGraphMlFile();
-            pack();
-            setLocationRelativeTo(null);
+//            pack();
+//            setLocationRelativeTo(null);
         }
     }//GEN-LAST:event_menuOpenActionPerformed
 
@@ -354,7 +365,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         loadSelectedGraphMlFile();
         panel.selectCellsById(selectedIds);
     }//GEN-LAST:event_btnShowAllActionPerformed
-    
+
     private void loadSelectedGraphMlFile() {
         panel = new GraphVisualiserPanel();
         panel.load(selectedFile);
@@ -371,6 +382,16 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         panel.requestFocus();
         revalidate();
         String filesRecent = prefs.get(RECENTFILE_KEY, null);
+
+        new FileDrop(panel, true, (java.io.File[] files) -> {
+            System.out.println("drop:" + Arrays.toString(files));
+            if (files.length > 0) {
+                selectedFile = files[0];
+                loadSelectedGraphMlFile();
+            }
+
+        });
+
         try {
             if (filesRecent == null) {
                 prefs.put(RECENTFILE_KEY, selectedFile.getCanonicalPath());
@@ -379,7 +400,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
                 boolean noMatch = !Arrays.stream(filesRecent.split("\\|")).map((s) -> s.trim()).anyMatch((t) -> {
                     return t.equalsIgnoreCase(canonicalPath);
                 });
-                
+
                 if (noMatch) {
                     recentMenu.add(new RecentMenuItem(canonicalPath));
                     filesRecent += "|" + selectedFile.getCanonicalPath();
@@ -393,7 +414,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
             Logger.getLogger(VisualiserAppFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     public void display() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
@@ -403,11 +424,11 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private class RecentMenuItem extends JMenuItem {
-        
+
         private File file;
-        
+
         public RecentMenuItem(String text) {
             super();
             file = new File(text);
@@ -423,7 +444,7 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
                 }
             });
         }
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

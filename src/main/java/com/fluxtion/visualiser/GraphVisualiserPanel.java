@@ -38,7 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -180,15 +180,17 @@ public class GraphVisualiserPanel extends JPanel {
         List<String> ids = selectedCells.stream().map((m) -> m.getId()).collect(Collectors.toList());
         return ids;
     }
-    
-    public void highlightCellOnly(String cellId){
+
+    public void highlightCellOnly(String cellId) {
         Object[] allCells = mxGraphModel.getChildren(graph.getModel(), graph.getDefaultParent());
         List<mxICell> matchingCells = Arrays.stream(allCells).map((t) -> (mxICell) t).filter((t) -> {
             return cellId.equals(t.getId());
         }).collect(Collectors.toList());
         selectedCells.clear();
-        highlightCells(matchingCells, false);
-        graphComponent.scrollCellToVisible(matchingCells.get(0), false);
+        if (!matchingCells.isEmpty()) {
+            highlightCells(matchingCells, false);
+            graphComponent.scrollCellToVisible(matchingCells.get(0), false);
+        }
     }
 
     public void selectCellsById(List<String> idList) {
@@ -206,7 +208,7 @@ public class GraphVisualiserPanel extends JPanel {
         graph.setCellStyles(mxConstants.STYLE_FONTCOLOR, "grey", allCells);
         //
         for (mxICell selectedCell : matchingCells) {
-            if(highlightRelations){
+            if (highlightRelations) {
                 addParents(selectedCell, true, highlightedCells);
                 addChildren(selectedCell, true, highlightedCells);
             }
@@ -241,7 +243,7 @@ public class GraphVisualiserPanel extends JPanel {
 
         //style
         mxStylesheet stylesheet = graph.getStylesheet();
-        Hashtable<String, Object> style = new Hashtable<>();
+        Map<String, Object> style = new HashMap<>();
         style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
         style.put(mxConstants.STYLE_ROUNDED, true);
         style.put(mxConstants.STYLE_OPACITY, 100);
@@ -253,7 +255,7 @@ public class GraphVisualiserPanel extends JPanel {
         style.put(mxConstants.STYLE_FONTFAMILY, "Segoe");
         stylesheet.putCellStyle("EVENTHANDLER", style);
 
-        style = new Hashtable<>();
+        style = new HashMap<>();
         style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_ELLIPSE);
         style.put(mxConstants.STYLE_ROUNDED, true);
         style.put(mxConstants.STYLE_OPACITY, 100);
@@ -265,7 +267,7 @@ public class GraphVisualiserPanel extends JPanel {
         style.put(mxConstants.STYLE_AUTOSIZE, 1);
         stylesheet.putCellStyle("EVENT", style);
 
-        style = new Hashtable<>();
+        style = new HashMap<>();
         style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_RECTANGLE);
         style.put(mxConstants.STYLE_WHITE_SPACE, "wrap");
         style.put(mxConstants.STYLE_ROUNDED, true);
@@ -279,7 +281,7 @@ public class GraphVisualiserPanel extends JPanel {
         style.put(mxConstants.STYLE_AUTOSIZE, 1);
         stylesheet.putCellStyle("NODE", style);
 
-        style = new Hashtable<>();
+        style = new HashMap<>();
         style.put(mxConstants.STYLE_SHAPE, mxConstants.SHAPE_CLOUD);
         style.put(mxConstants.STYLE_WHITE_SPACE, "wrap");
         style.put(mxConstants.STYLE_ROUNDED, true);

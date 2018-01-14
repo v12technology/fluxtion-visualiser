@@ -51,7 +51,6 @@ import sun.swing.SwingLazyValue;
  * Fluxtion.
  *
  * @author Greg Higgins (greg.higgins@V12technology.com)
- * @version $Id: $Id
  */
 public class VisualiserAppFrame extends javax.swing.JFrame {
 
@@ -89,11 +88,6 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         eventPanel1.setEventBus(eventBus);
     }
 
-    /**
-     * <p>selectedAuditRecord.</p>
-     *
-     * @param record a {@link com.fluxtion.visualiser.extensions.audit.EventLog.AuditRecord} object.
-     */
     @Subscribe
     public void selectedAuditRecord(EventLog.AuditRecord record) {
         System.out.println("received:" + record);
@@ -384,11 +378,6 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         panel.zoom(true);
     }//GEN-LAST:event_btnZoomInActionPerformed
 
-    /**
-     * <p>inceaseFontSize.</p>
-     *
-     * @param increase a boolean.
-     */
     public static void inceaseFontSize(boolean increase) {
         int delta = increase ? 2 : -2;
         Enumeration keys = UIManager.getDefaults().keys();
@@ -407,12 +396,6 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
     private Map<String, Font> originals;
     private float scale;
 
-    /**
-     * <p>changeFont.</p>
-     *
-     * @param component a {@link java.awt.Component} object.
-     * @param fontSize a int.
-     */
     public void changeFont(Component component, int fontSize) {
         Font f = component.getFont();
         component.setFont(new Font(f.getName(), f.getStyle(), f.getSize() + fontSize));
@@ -430,11 +413,6 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * <p>setFontScale.</p>
-     *
-     * @param scale a float.
-     */
     public void setFontScale(float scale) {
 
         if (originals == null) {
@@ -556,9 +534,6 @@ public class VisualiserAppFrame extends javax.swing.JFrame {
         }
     }
 
-    /**
-     * <p>display.</p>
-     */
     public void display() {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override

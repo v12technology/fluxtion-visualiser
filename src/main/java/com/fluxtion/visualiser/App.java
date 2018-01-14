@@ -18,17 +18,11 @@ package com.fluxtion.visualiser;
 
 /**
  * Entry point for Fluxtion graph visualiser.
- *
+ * 
  * @author Greg Higgins (greg.higgins@V12technology.com)
- * @version $Id: $Id
  */
 public class App {
 
-    /**
-     * <p>main.</p>
-     *
-     * @param args an array of {@link java.lang.String} objects.
-     */
     public static void main(String[] args) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

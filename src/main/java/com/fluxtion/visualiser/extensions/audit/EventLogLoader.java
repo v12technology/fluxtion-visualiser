@@ -11,27 +11,17 @@ import java.util.Map;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * <p>EventLogLoader class.</p>
  *
  * @author Greg Higgins (greg.higgins@V12technology.com)
- * @version $Id: $Id
  */
 public class EventLogLoader {
 
     private List<EventLog> eventList = new ArrayList<>();
 
-    /**
-     * <p>Constructor for EventLogLoader.</p>
-     */
     public EventLogLoader() {
         loadSampleLog();
     }
 
-    /**
-     * <p>Getter for the field <code>eventList</code>.</p>
-     *
-     * @return a {@link java.util.List} object.
-     */
     public List<EventLog> getEventList() {
         return eventList;
     }
@@ -60,11 +50,6 @@ public class EventLogLoader {
                 });
     }
 
-    /**
-     * <p>main.</p>
-     *
-     * @param args an array of {@link java.lang.String} objects.
-     */
     public static void main(String[] args) {
         new EventLogLoader();
     }

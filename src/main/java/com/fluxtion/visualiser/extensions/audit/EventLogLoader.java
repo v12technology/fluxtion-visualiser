@@ -25,18 +25,17 @@ public class EventLogLoader {
     public List<EventLog> getEventList() {
         return eventList;
     }
-    
 
     /**
      * Load a file Display getEventType summary
-
- select getEventType and display
-
- move through record with up/down arrow keys Display log message on
- selection
-
- required functions from display panel: filterNodesById(String[] ids)
- highlightNode(String id) load from scratch
+     *
+     * select getEventType and display
+     *
+     * move through record with up/down arrow keys Display log message on
+     * selection
+     *
+     * required functions from display panel: filterNodesById(String[] ids)
+     * highlightNode(String id) load from scratch
      *
      *
      *

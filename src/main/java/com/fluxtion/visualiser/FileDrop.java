@@ -28,7 +28,7 @@ import java.io.Reader;
  * component and a <tt>Listener</tt> to receive notification when file(s) have
  * been dropped. Here is an example:
  * <p>
- * <code><pre>
+ * <pre>
  *      JPanel myPanel = new JPanel();
  *      new FileDrop( myPanel, new FileDrop.Listener()
  *      {   public void filesDropped( java.io.File[] files )
@@ -37,7 +37,7 @@ import java.io.Reader;
  *              ...
  *          }   // end filesDropped
  *      }); // end FileDrop.Listener
- * </pre></code>
+ * </pre>
  * <p>
  * You can specify the border that will appear when files are being dragged by
  * calling the constructor with a <tt>javax.swing.border.Border</tt>. Only
@@ -47,8 +47,6 @@ import java.io.Reader;
  * object (such as <tt>System.out</tt>) into the full constructor. A
  * <tt>null</tt>
  * value will result in no extra debugging information being output.
- * <p>
- *
  * <p>
  * I'm releasing this code into the Public Domain. Enjoy.
  * </p>
@@ -549,16 +547,6 @@ public class FileDrop {
         }
     }   // end log
 
-    /**
-     * Removes the drag-and-drop hooks from the component and optionally from
-     * the all children. You should call this if you add and remove components
-     * after you've set up the drag-and-drop. This will recursively unregister
-     * all components contained within
-     * <var>c</var> if <var>c</var> is a {@link java.awt.Container}.
-     *
-     * @param c The component to unregister as a drop target
-     * @since 1.0
-     */
     public static boolean remove(java.awt.Component c) {
         return remove(null, c, true);
     }   // end remove

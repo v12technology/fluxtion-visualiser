@@ -572,7 +572,7 @@ public class FileDrop {
     /* ********  I N N E R   I N T E R F A C E   L I S T E N E R  ******** */
     /**
      * Implement this inner interface to listen for when files are dropped. For
-     * example your class declaration may begin like this:      <code><pre>
+     * example your class declaration may begin like this:      <pre>
      *      public class MyClass implements FileDrop.Listener
      *      ...
      *      public void filesDropped( java.io.File[] files )
@@ -580,7 +580,7 @@ public class FileDrop {
      *          ...
      *      }   // end filesDropped
      *      ...
-     * </pre></code>
+     * </pre>
      *
      * @since 1.1
      */

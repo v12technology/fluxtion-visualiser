@@ -23,12 +23,10 @@ import java.io.Reader;
  * a Java program. Any <tt>java.awt.Component</tt> can be dropped onto, but only
  * <tt>javax.swing.JComponent</tt>s will indicate the drop event with a changed
  * border.
- * <p>
  * To use this class, construct a new <tt>FileDrop</tt> by passing it the target
  * component and a <tt>Listener</tt> to receive notification when file(s) have
  * been dropped. Here is an example:
- * <p>
- * <code><pre>
+ * <pre>
  *      JPanel myPanel = new JPanel();
  *      new FileDrop( myPanel, new FileDrop.Listener()
  *      {   public void filesDropped( java.io.File[] files )
@@ -37,7 +35,7 @@ import java.io.Reader;
  *              ...
  *          }   // end filesDropped
  *      }); // end FileDrop.Listener
- * </pre></code>
+ * </pre>
  * <p>
  * You can specify the border that will appear when files are being dragged by
  * calling the constructor with a <tt>javax.swing.border.Border</tt>. Only
@@ -47,8 +45,6 @@ import java.io.Reader;
  * object (such as <tt>System.out</tt>) into the full constructor. A
  * <tt>null</tt>
  * value will result in no extra debugging information being output.
- * <p>
- *
  * <p>
  * I'm releasing this code into the Public Domain. Enjoy.
  * </p>
@@ -549,31 +545,10 @@ public class FileDrop {
         }
     }   // end log
 
-    /**
-     * Removes the drag-and-drop hooks from the component and optionally from
-     * the all children. You should call this if you add and remove components
-     * after you've set up the drag-and-drop. This will recursively unregister
-     * all components contained within
-     * <var>c</var> if <var>c</var> is a {@link java.awt.Container}.
-     *
-     * @param c The component to unregister as a drop target
-     * @since 1.0
-     */
     public static boolean remove(java.awt.Component c) {
         return remove(null, c, true);
     }   // end remove
 
-    /**
-     * Removes the drag-and-drop hooks from the component and optionally from
-     * the all children. You should call this if you add and remove components
-     * after you've set up the drag-and-drop.
-     *
-     * @param out Optional {@link java.io.PrintStream} for logging drag and drop
-     * messages
-     * @param c The component to unregister
-     * @param recursive Recursively unregister components within a container
-     * @since 1.0
-     */
     public static boolean remove(java.io.PrintStream out, java.awt.Component c, boolean recursive) {   // Make sure we support dnd.
         if (supportsDnD()) {
             log(out, "FileDrop: Removing drag-and-drop hooks.");
@@ -597,7 +572,7 @@ public class FileDrop {
     /* ********  I N N E R   I N T E R F A C E   L I S T E N E R  ******** */
     /**
      * Implement this inner interface to listen for when files are dropped. For
-     * example your class declaration may begin like this:      <code><pre>
+     * example your class declaration may begin like this:      <pre>
      *      public class MyClass implements FileDrop.Listener
      *      ...
      *      public void filesDropped( java.io.File[] files )
@@ -605,7 +580,7 @@ public class FileDrop {
      *          ...
      *      }   // end filesDropped
      *      ...
-     * </pre></code>
+     * </pre>
      *
      * @since 1.1
      */
@@ -624,8 +599,6 @@ public class FileDrop {
     /* ********  I N N E R   C L A S S  ******** */
     /**
      * This is the event that is passed to the
-     * {@link FileDropListener#filesDropped filesDropped(...)} method in your
-     * {@link FileDropListener} when files are dropped onto a registered drop
      * target.
      *
      * <p>
@@ -644,7 +617,7 @@ public class FileDrop {
          * and the {@link FileDrop} that initiated the event.
          *
          * @param files The array of files that were dropped
-         * @source The event source
+         * @param source The event source
          * @since 1.1
          */
         public Event(java.io.File[] files, Object source) {
@@ -800,7 +773,6 @@ public class FileDrop {
          * data flavor, if one was created in the constructors, second the
          * default {@link #DATA_FLAVOR} associated with
          * {@link TransferableObject}, and third the
-         * {@link java.awt.datatransfer.DataFlavor.stringFlavor}.
          *
          * @return An array of supported data flavors
          * @since 1.1
@@ -880,8 +852,8 @@ public class FileDrop {
          * {@link TransferableObject}, the {@link Fetcher}'s
          * {@link #getObject getObject()} method will be called.
          *
+         * copyright 2001
          * @author Robert Harder
-         * @copyright 2001
          * @version 1.1
          * @since 1.1
          */

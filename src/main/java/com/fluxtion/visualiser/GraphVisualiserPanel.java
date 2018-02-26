@@ -71,6 +71,7 @@ public class GraphVisualiserPanel extends JPanel {
     private ArrayList<mxICell> highlightedCells;
     private ArrayList<mxICell> selectedCells;
     private mxHierarchicalLayout layoutImpl;
+    private File srcFile;
 
     public GraphVisualiserPanel() {
         setOpaque(true);
@@ -103,8 +104,7 @@ public class GraphVisualiserPanel extends JPanel {
         am.put("resetZoom", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                graphComponent.zoomActual();
-                graphComponent.zoomAndCenter();
+                reload();
             }
         });
 
@@ -114,6 +114,16 @@ public class GraphVisualiserPanel extends JPanel {
                 foldCells(true);
             }
         });
+    }
+
+    public void reload() {
+        if (srcFile != null) {
+            load(srcFile);
+            revalidate();
+            repaint();
+        }
+        graphComponent.zoomActual();
+        graphComponent.zoomAndCenter();
     }
 
     public void addReloadAction(Action a) {
@@ -169,6 +179,10 @@ public class GraphVisualiserPanel extends JPanel {
     }
 
     public void selectCellsBySearchString(String id) {
+
+        highlightedCells.clear();
+        selectedCells.clear();
+
         Object[] allCells = mxGraphModel.getChildren(graph.getModel(), graph.getDefaultParent());
         List<mxICell> matchingCells = Arrays.stream(allCells).map((t) -> (mxICell) t).filter((t) -> {
             return t.getId().contains(id);
@@ -235,6 +249,7 @@ public class GraphVisualiserPanel extends JPanel {
     }
 
     public mxGraph loadMxGraph(File f) {
+        srcFile = f;
         graph = new mxGraph();
 
         Map<String, Object> styleDefault = graph.getStylesheet().getDefaultEdgeStyle();
@@ -329,6 +344,12 @@ public class GraphVisualiserPanel extends JPanel {
         layoutImpl.setIntraCellSpacing(70);
         layoutImpl.setFineTuning(true);
         layoutImpl.execute(parent);
+
+        //remove old
+        if (graphComponent != null) {
+            remove(graphComponent);
+//            return;
+        }
 
         //swing component
         graphComponent = new mxGraphComponent(graph);

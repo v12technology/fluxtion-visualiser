@@ -5,9 +5,13 @@
  */
 package com.fluxtion.visualiser.extensions.audit;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -19,7 +23,11 @@ public class EventLogLoader {
     private List<EventLog> eventList = new ArrayList<>();
 
     public EventLogLoader() {
-        loadSampleLog();
+        try {
+            loadSampleLog();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(EventLogLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public List<EventLog> getEventList() {
@@ -40,13 +48,20 @@ public class EventLogLoader {
      *
      *
      */
-    private void loadSampleLog() {
+    private void loadSampleLog() throws FileNotFoundException {
         eventList.clear();
         new Yaml()
-                .loadAll(eventLogSingle + "\n---\n" + eventLogSingle)
+                .loadAll(new FileReader("C:\\Users\\gregp\\development\\projects\\fluxtion\\open-source\\fluxtion-examples\\case-studies\\credit-monitor\\target\\generated-sources\\testlog\\creditMonitorAudit.yml"))
+                //                .loadAll(eventLogSingle + "\n---\n" + eventLogSingle)
                 .forEach(m -> {
-                    Map e = (Map) ((Map) m).get("eventLogRecord");
-                    eventList.add(new EventLog(e));
+                    try {
+                        if (m != null) {
+                            Map e = (Map) ((Map) m).get("eventLogRecord");
+                            eventList.add(new EventLog(e));
+                        }
+                    } catch (Exception e) {
+                        System.out.println("could not load:" + e);
+                    }
                 });
     }
 

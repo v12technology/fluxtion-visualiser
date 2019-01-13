@@ -33,6 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -194,7 +195,7 @@ public class GraphVisualiserPanel extends JPanel {
 
         highlightedCells.clear();
         selectedCells.clear();
-        
+
         Object[] allCells = mxGraphModel.getChildren(graph.getModel(), graph.getDefaultParent());
         for (String id : ids) {
             List<mxICell> matchingCells = Arrays.stream(allCells).map((t) -> (mxICell) t).filter((t) -> {
@@ -420,6 +421,20 @@ public class GraphVisualiserPanel extends JPanel {
                 repaint();
             }
         });
+
+        //add mouse wheel listener
+        graphComponent.addMouseWheelListener((e) -> {
+            if (e.isAltDown()) {
+                if (e.getWheelRotation() > 0) {
+                    graphComponent.zoomOut();
+                } else {
+                    graphComponent.zoomIn();
+                }
+            } else {
+//                 possible forward scroll events*
+            }
+        });
+
         add(graphComponent, BorderLayout.CENTER);
         graphComponent.setCenterPage(true);
     }

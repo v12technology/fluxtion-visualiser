@@ -190,6 +190,20 @@ public class GraphVisualiserPanel extends JPanel {
         highlightCells(matchingCells, true);
     }
 
+    public void selectCellsBySearchString(String[] ids) {
+
+        highlightedCells.clear();
+        selectedCells.clear();
+        
+        Object[] allCells = mxGraphModel.getChildren(graph.getModel(), graph.getDefaultParent());
+        for (String id : ids) {
+            List<mxICell> matchingCells = Arrays.stream(allCells).map((t) -> (mxICell) t).filter((t) -> {
+                return t.getId().contains(id);
+            }).collect(Collectors.toList());
+            highlightCells(matchingCells, true);
+        }
+    }
+
     public List<String> selectedIds() {
         List<String> ids = selectedCells.stream().map((m) -> m.getId()).collect(Collectors.toList());
         return ids;
